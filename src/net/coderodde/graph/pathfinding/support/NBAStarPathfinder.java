@@ -77,9 +77,9 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
     private void expandInForwardDirection() {
         Integer currentNode = OPENA.remove().getNode();
 
-//        if (CLOSED.contains(currentNode)) {
-//            return;
-//        }
+        if (CLOSED.contains(currentNode)) {
+            return;
+        }
 
         CLOSED.add(currentNode);
 
@@ -134,19 +134,15 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
 
         if (!OPENA.isEmpty()) {
             fA = OPENA.peek().getDistance();
-//            Integer node = OPENA.peek().getNode();
-//            fA = DISTANCEA.get(node)
-//                    + heuristicFunction.estimateDistanceBetween(node, 
-//                                                                targetNodeId);
         }
     }
 
     private void expandInBackwardDirection() {
         Integer currentNode = OPENB.remove().getNode();
 
-//        if (CLOSED.contains(currentNode)) {
-//            return;
-//        }
+        if (CLOSED.contains(currentNode)) {
+            return;
+        }
 
         CLOSED.add(currentNode);
 
@@ -199,13 +195,7 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
         }
 
         if (!OPENB.isEmpty()) {
-//            Integer node = OPENB.peek().getNode();
             fB = OPENB.peek().getDistance();
-            
-//            fB = DISTANCEB.get(node)
-//                    + heuristicFunction
-//                    .estimateDistanceBetween(node, sourceNodeId);
-//            System.out.println("hfds: " + OPENB.peek().getDistance() + ":" + fB);
         }
     }
 

@@ -14,14 +14,15 @@ import net.coderodde.graph.pathfinding.support.NBAStarPathfinder;
 
 public class Demo {
 
-    private static final int NODES = 5_000;
-    private static final int ARCS = 50_000;
+    private static final int NODES = 100_000;
+    private static final int ARCS = 1_000_000;
     
     public static void main(String[] args) {
-        long seed = 1306862436431866L; System.nanoTime();
+        long seed = System.nanoTime();
         Random random = new Random(seed);
         System.out.println("Seed = " + seed);
         
+        long start = System.currentTimeMillis();
         DirectedGraph graph = getRandomGraph(NODES, ARCS, random);
         DirectedGraphNodeCoordinates coordinates = getCoordinates(graph, 
                                                                   random);
@@ -32,6 +33,10 @@ public class Demo {
         
         Integer sourceNodeId = choose(graphNodeList, random);
         Integer targetNodeId = choose(graphNodeList, random);
+        long end = System.currentTimeMillis();
+        
+        System.out.println("Created the graph data structures in " +
+                           (end - start) + " milliseconds.");
         
         System.out.println("Source: " + sourceNodeId);
         System.out.println("Target: " + targetNodeId);
@@ -50,9 +55,9 @@ public class Demo {
         AbstractPathfinder finder3 = new NBAStarPathfinder(graph, 
                                                            weightFunction,
                                                            hf);
-        long start = System.currentTimeMillis();
+        start = System.currentTimeMillis();
         List<Integer> path1 = finder1.search(sourceNodeId, targetNodeId);
-        long end = System.currentTimeMillis();
+        end = System.currentTimeMillis();
         
         System.out.println("A* in " + (end - start) + " milliseconds.");
         
@@ -65,6 +70,7 @@ public class Demo {
         
         System.out.println("Dijkstra in " + (end - start) + " milliseconds.");
         path2.forEach(System.out::println);
+        System.out.println();
         
         start = System.currentTimeMillis();
         List<Integer> path3 = finder3.search(sourceNodeId, targetNodeId);
@@ -72,12 +78,10 @@ public class Demo {
         
         System.out.println("NBA* in " + (end - start) + " milliseconds.");
         path3.forEach(System.out::println);
+        System.out.println();
         
         System.out.println("Algorithms agree: " +
                 (path1.equals(path2) && path1.equals(path3)));
-        
-        System.out.println("Optimal path length: " + getLength(path1, weightFunction));
-        System.out.println("NBA path length: " + getLength(path3, weightFunction));
     }
     
     private static double 
