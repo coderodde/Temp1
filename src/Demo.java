@@ -10,6 +10,7 @@ import net.coderodde.graph.pathfinding.HeuristicFunction;
 import net.coderodde.graph.pathfinding.support.AStarPathfinder;
 import net.coderodde.graph.pathfinding.support.DijkstraPathfinder;
 import net.coderodde.graph.pathfinding.support.EuclideanHeuristicFunction;
+import net.coderodde.graph.pathfinding.support.NBAStarPathfinder;
 
 public class Demo {
 
@@ -46,6 +47,9 @@ public class Demo {
         AbstractPathfinder finder2 = new DijkstraPathfinder(graph,
                                                             weightFunction);
         
+        AbstractPathfinder finder3 = new NBAStarPathfinder(graph, 
+                                                           weightFunction,
+                                                           hf);
         long start = System.currentTimeMillis();
         List<Integer> path1 = finder1.search(sourceNodeId, targetNodeId);
         long end = System.currentTimeMillis();
@@ -60,10 +64,17 @@ public class Demo {
         end = System.currentTimeMillis();
         
         System.out.println("Dijkstra in " + (end - start) + " milliseconds.");
-        
         path2.forEach(System.out::println);
         
-        System.out.println("Algorithms agree: " + path1.equals(path2));
+        start = System.currentTimeMillis();
+        List<Integer> path3 = finder3.search(sourceNodeId, targetNodeId);
+        end = System.currentTimeMillis();
+        
+        System.out.println("NBA* in " + (end - start) + " milliseconds.");
+        path3.forEach(System.out::println);
+        
+        System.out.println("Algorithms agree: " +
+                (path1.equals(path2) && path1.equals(path3)));
     }
     
     private static DirectedGraph getRandomGraph(int nodes, 
