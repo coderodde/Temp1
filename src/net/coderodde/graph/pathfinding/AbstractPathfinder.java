@@ -31,6 +31,10 @@ public abstract class AbstractPathfinder {
             return nodeId;
         }
         
+        public double getDistance() {
+            return distance;
+        }
+        
         @Override
         public int compareTo(HeapEntry o) {
             return Double.compare(distance, o.distance);

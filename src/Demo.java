@@ -14,11 +14,11 @@ import net.coderodde.graph.pathfinding.support.NBAStarPathfinder;
 
 public class Demo {
 
-    private static final int NODES = 10_000;
+    private static final int NODES = 5_000;
     private static final int ARCS = 50_000;
     
     public static void main(String[] args) {
-        long seed = 1306862436431866L; //System.nanoTime();
+        long seed = 1306862436431866L; System.nanoTime();
         Random random = new Random(seed);
         System.out.println("Seed = " + seed);
         
@@ -75,6 +75,21 @@ public class Demo {
         
         System.out.println("Algorithms agree: " +
                 (path1.equals(path2) && path1.equals(path3)));
+        
+        System.out.println("Optimal path length: " + getLength(path1, weightFunction));
+        System.out.println("NBA path length: " + getLength(path3, weightFunction));
+    }
+    
+    private static double 
+        getLength(List<Integer> path,
+                  DirectedGraphWeightFunction weightFunction) {
+        double sum = 0.0;
+        
+        for (int i = 0; i < path.size() - 1; ++i) {
+            sum += weightFunction.get(path.get(i), path.get(i + 1));
+        }
+        
+        return sum;
     }
     
     private static DirectedGraph getRandomGraph(int nodes, 
