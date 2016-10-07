@@ -15,7 +15,7 @@ import net.coderodde.graph.pathfinding.support.NBAStarPathfinder;
 public class Demo {
 
     private static final int NODES = 100_000;
-    private static final int ARCS = 1_000_000;
+    private static final int ARCS = 500_000;
     
     public static void main(String[] args) {
         long seed = System.nanoTime();
