@@ -14,13 +14,13 @@ import net.coderodde.graph.pathfinding.HeuristicFunction;
 public class EuclideanHeuristicFunction implements HeuristicFunction {
 
     private final DirectedGraphNodeCoordinates coordinates;
-    
+
     public EuclideanHeuristicFunction(DirectedGraphNodeCoordinates coordinates) {
         this.coordinates =
                 Objects.requireNonNull(coordinates,
                                        "The input coordinate map is null.");
     }
-    
+
     /**
      * {@inheritDoc }
      */

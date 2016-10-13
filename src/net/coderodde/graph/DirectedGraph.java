@@ -14,17 +14,17 @@ import java.util.Set;
  * @version 1.6 (Oct 6, 2016)
  */
 public class DirectedGraph {
-    
+
     /**
      * This map maps each directed graph node to the list of its child nodes.
      */
     private final Map<Integer, Set<Integer>> childMap  = new HashMap<>();
-    
+
     /**
      * This map maps each directed graph node to the list of its parent nodes.
      */
     private final Map<Integer, Set<Integer>> parentMap = new HashMap<>();
-    
+
     /**
      * Adds a new node represented by integer {@code nodeId} to this graph if
      * it is not yet present in it.
@@ -35,7 +35,7 @@ public class DirectedGraph {
         childMap .putIfAbsent(nodeId, new HashSet<>());
         parentMap.putIfAbsent(nodeId, new HashSet<>());
     }
-    
+
     /**
      * Creates a directed arc <tt>(tailNodeId, headNodeId)</tt> if it is not yet
      * present in the graph.
@@ -47,7 +47,7 @@ public class DirectedGraph {
         childMap .get(tailNodeId).add(headNodeId);
         parentMap.get(headNodeId).add(tailNodeId);
     }
-    
+
     /**
      * Returns the view of all the nodes in this graph.
      * 
@@ -56,7 +56,7 @@ public class DirectedGraph {
     public Set<Integer> getNodeList() {
         return childMap.keySet();
     }
-    
+
     /**
      * Returns the set of all child nodes of the given node {@code nodeId}.
      * 
@@ -66,7 +66,7 @@ public class DirectedGraph {
     public Set<Integer> getChildrenOf(int nodeId) {
         return Collections.<Integer>unmodifiableSet(childMap.get(nodeId));
     }
-    
+
     /**
      * Returns the set of all parent nodes of the given node {@code nodeId}.
      * 

@@ -6,6 +6,7 @@ package net.coderodde.graph.pathfinding;
  * @author Rodion "rodde" Efremov
  * @version 1.6 (Oct 6, 2016)
  */
+@FunctionalInterface
 public interface HeuristicFunction {
 
     /**

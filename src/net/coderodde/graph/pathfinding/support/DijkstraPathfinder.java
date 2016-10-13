@@ -14,9 +14,9 @@ public final class DijkstraPathfinder extends AbstractPathfinder {
         this.finderImplementation = 
                 new AStarPathfinder(graph, 
                                     weightFunction,
-                                    new ZeroHeuristicFunction());
+                                    (a, b) -> { return 0.0; });
     }
-    
+
     @Override
     public List<Integer> search(int sourceNodeId, int targetNodeId) {
         return finderImplementation.search(sourceNodeId, targetNodeId);

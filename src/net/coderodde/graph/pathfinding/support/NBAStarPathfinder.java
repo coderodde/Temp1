@@ -178,9 +178,9 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
                                     tentativeDistance
                                     + heuristicFunction
                                     .estimateDistanceBetween(parentNode,
-                                                             targetNodeId));
+                                                             sourceNodeId));
                     OPENB.add(e);
-                    
+
                     if (DISTANCEA.containsKey(parentNode)) {
                         double pathLength = tentativeDistance
                                 + DISTANCEA.get(parentNode);
@@ -210,7 +210,7 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
 
         double totalDistance
                 = heuristicFunction.estimateDistanceBetween(sourceNodeId,
-                        targetNodeId);
+                                                            targetNodeId);
 
         fA = totalDistance;
         fB = totalDistance;

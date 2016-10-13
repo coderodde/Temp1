@@ -16,7 +16,7 @@ public class DirectedGraphWeightFunction {
      * Maps the arcs to the arc weights.
      */
     private final Map<Integer, Map<Integer, Double>> map = new HashMap<>();
-    
+
     /**
      * Associates the weight {@code weight} with the arc 
      * <tt>(tailNodeId, headNodeId)</tt>.
@@ -30,7 +30,7 @@ public class DirectedGraphWeightFunction {
         map.putIfAbsent(tailNodeId, new HashMap<>());
         map.get(tailNodeId).put(headNodeId, weight);
     }
-    
+
     /**
      * Returns the weight of the given arc.
      * 
@@ -41,12 +41,12 @@ public class DirectedGraphWeightFunction {
     public double get(int tailNodeId, int headNodeId) {
         return map.get(tailNodeId).get(headNodeId);
     }
-    
+
     private void checkWeight(double weight) {
         if (Double.isNaN(weight)) {
             throw new IllegalArgumentException("The input weight is NaN.");
         }
-        
+
         if (weight < 0.0) {
             throw new IllegalArgumentException(
                     "The input weight is negative: " + weight + ".");

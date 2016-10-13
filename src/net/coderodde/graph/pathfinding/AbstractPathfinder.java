@@ -17,40 +17,16 @@ import net.coderodde.graph.DirectedGraphWeightFunction;
  */
 public abstract class AbstractPathfinder {
 
-    public static final class HeapEntry implements Comparable<HeapEntry> {
-        
-        private final int nodeId;
-        private final double distance; // The priority key.
-
-        public HeapEntry(int nodeId, double distance) {
-            this.nodeId = nodeId;
-            this.distance = distance;
-        }
-        
-        public int getNode() {
-            return nodeId;
-        }
-        
-        public double getDistance() {
-            return distance;
-        }
-        
-        @Override
-        public int compareTo(HeapEntry o) {
-            return Double.compare(distance, o.distance);
-        }
-    }
-    
     /**
      * The graph to search in.
      */
     protected final DirectedGraph graph;
-    
+
     /**
      * The weight function to use.
      */
     protected final DirectedGraphWeightFunction weightFunction;
-    
+
     protected AbstractPathfinder(DirectedGraph graph,
                                  DirectedGraphWeightFunction weightFunction) {
         this.graph = Objects.requireNonNull(graph, "The input graph is null.");
@@ -58,12 +34,12 @@ public abstract class AbstractPathfinder {
                 Objects.requireNonNull(weightFunction,
                                        "The input weight function is null.");
     }
-    
+
     protected AbstractPathfinder() {
         this.graph = null;
         this.weightFunction = null; // Compiler requires this initialization.
     }
-    
+
     /**
      * Searches and returns a shortest path starting from the node 
      * {@code sourceNodeId} and leading to {@code targetNodeId}.
@@ -75,7 +51,7 @@ public abstract class AbstractPathfinder {
      *         reachable from source.
      */
     public abstract List<Integer> search(int sourceNodeId, int targetNodeId);
-    
+
     /**
      * Reconstructs a shortest path from the data structures maintained by a 
      * <b>bidirectional</b> pathfinding algorithm.
@@ -90,14 +66,14 @@ public abstract class AbstractPathfinder {
                                           Map<Integer, Integer> PARENTSB) {
         List<Integer> path = new ArrayList<>();
         Integer currentNodeId = touchNodeId;
-        
+
         while (currentNodeId != null) {
             path.add(currentNodeId);
             currentNodeId = PARENTSA.get(currentNodeId);
         }
-        
+
         Collections.<Integer>reverse(path);
-        
+
         if (PARENTSB != null) {
             currentNodeId = PARENTSB.get(touchNodeId);
 
@@ -106,10 +82,10 @@ public abstract class AbstractPathfinder {
                 currentNodeId = PARENTSB.get(currentNodeId);
             }
         }
-        
+
         return path;
     }
-    
+
     /**
      * Reconstructs a shortest path from the data structures maintained by a
      * unidirectional pathfinding algorithm.

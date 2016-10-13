@@ -17,7 +17,7 @@ public class DirectedGraphNodeCoordinates {
      * Maps each node to its coordinates.
      */
     private final Map<Integer, Point2D.Double> map = new HashMap<>();
-    
+
     /**
      * Associates the coordinates {@code point} to the node {@code nodeId}.
      * 
@@ -27,7 +27,7 @@ public class DirectedGraphNodeCoordinates {
     public void put(int nodeId, Point2D.Double point) {
         map.put(nodeId, point);
     }
-    
+
     /**
      * Return the point of the input node.
      * 
