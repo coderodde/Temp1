@@ -22,7 +22,7 @@ import net.coderodde.graph.pathfinding.HeuristicFunction;
  * make sure each thread has its own object of this class.
  *
  * @author Rodion "rodde" Efremov
- * @version 1.6 (Oct 6, 2016)
+ * @version 1.61 (Oct 13, 2016)
  */
 public final class NBAStarPathfinder extends AbstractPathfinder {
 
@@ -147,15 +147,14 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
         CLOSED.add(currentNode);
 
         if (DISTANCEB.get(currentNode) +
-                heuristicFunction
-                .estimateDistanceBetween(currentNode,
-                                         sourceNodeId)
+                heuristicFunction.estimateDistanceBetween(currentNode,
+                                                          sourceNodeId)
                 >= bestPathLength
                 || 
                 DISTANCEB.get(currentNode) +
                 fA -
-                heuristicFunction
-                .estimateDistanceBetween(currentNode, targetNodeId)
+                heuristicFunction.estimateDistanceBetween(currentNode, 
+                                                          targetNodeId)
                 >= bestPathLength) {
             // Reject the node 'currentNode'.
         } else {
@@ -169,8 +168,8 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
                         + weightFunction.get(parentNode, currentNode);
 
                 if (!DISTANCEB.containsKey(parentNode)
-                        || DISTANCEB.get(parentNode)
-                        > tentativeDistance) {
+                        ||
+                        DISTANCEB.get(parentNode) > tentativeDistance) {
                     DISTANCEB.put(parentNode, tentativeDistance);
                     PARENTSB.put(parentNode, currentNode);
                     HeapEntry e

@@ -20,7 +20,7 @@ public class Demo {
     private static final double PLANE_HEIGHT = 1000.0;
     
     public static void main(String[] args) {
-        long seed = 199942050968787L; System.nanoTime();
+        long seed = System.nanoTime();
         Random random = new Random(seed);
         System.out.println("Seed = " + seed);
 
@@ -62,8 +62,6 @@ public class Demo {
 
         System.out.println("Algorithms agree: " +
                 (path1.equals(path2) && path1.equals(path3)));
-        System.out.println(getPathCost(path1, weightFunction));
-        System.out.println(getPathCost(path3, weightFunction));
     }
 
     private static List<Integer> benchmark(AbstractPathfinder pathfinder,
