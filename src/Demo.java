@@ -6,6 +6,7 @@ import net.coderodde.graph.DirectedGraph;
 import net.coderodde.graph.DirectedGraphWeightFunction;
 import net.coderodde.graph.pathfinding.AbstractPathfinder;
 import net.coderodde.graph.pathfinding.DirectedGraphNodeCoordinates;
+import net.coderodde.graph.pathfinding.DirectedGraphPath;
 import net.coderodde.graph.pathfinding.HeuristicFunction;
 import net.coderodde.graph.pathfinding.support.AStarPathfinder;
 import net.coderodde.graph.pathfinding.support.DijkstraPathfinder;
@@ -56,25 +57,24 @@ public class Demo {
         AbstractPathfinder finder3 = new NBAStarPathfinder(graph, 
                                                            weightFunction,
                                                            hf);
-        List<Integer> path1 = benchmark(finder1, sourceNodeId, targetNodeId);
-        List<Integer> path2 = benchmark(finder2, sourceNodeId, targetNodeId);
-        List<Integer> path3 = benchmark(finder3, sourceNodeId, targetNodeId);
+        DirectedGraphPath path1 = benchmark(finder1, sourceNodeId, targetNodeId);
+        DirectedGraphPath path2 = benchmark(finder2, sourceNodeId, targetNodeId);
+        DirectedGraphPath path3 = benchmark(finder3, sourceNodeId, targetNodeId);
 
         System.out.println("Algorithms agree: " +
                 (path1.equals(path2) && path1.equals(path3)));
     }
 
-    private static List<Integer> benchmark(AbstractPathfinder pathfinder,
-                                           int sourceNode, 
-                                           int targetNode) {
+    private static DirectedGraphPath benchmark(AbstractPathfinder pathfinder,
+                                               int sourceNode, 
+                                               int targetNode) {
         long start = System.currentTimeMillis();
-        List<Integer> path = pathfinder.search(sourceNode, targetNode);
+        DirectedGraphPath path = pathfinder.search(sourceNode, targetNode);
         long end = System.currentTimeMillis();
         
         System.out.println(pathfinder.getClass().getSimpleName() + 
                            " in " + (end - start) + " milliseconds.");
-        
-        path.forEach(System.out::println);
+        System.out.println(path);
         System.out.println();
         return path;
     }

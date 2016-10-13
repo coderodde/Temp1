@@ -1,10 +1,8 @@
 package net.coderodde.graph.pathfinding.support;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
@@ -12,7 +10,9 @@ import java.util.Set;
 import net.coderodde.graph.DirectedGraph;
 import net.coderodde.graph.DirectedGraphWeightFunction;
 import net.coderodde.graph.pathfinding.AbstractPathfinder;
+import net.coderodde.graph.pathfinding.DirectedGraphPath;
 import net.coderodde.graph.pathfinding.HeuristicFunction;
+import net.coderodde.graph.pathfinding.TargetUnreachableException;
 
 /**
  * This pathfinding algorithm is due to Wim Pijls and Henk Post in "Yet another
@@ -39,8 +39,8 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
     private double fB;
     private double bestPathLength;
     private Integer touchNode;
-    private Integer sourceNodeId;
-    private Integer targetNodeId;
+    private Integer sourceNode;
+    private Integer targetNode;
 
     public NBAStarPathfinder(DirectedGraph graph,
             DirectedGraphWeightFunction weightFunction,
@@ -52,12 +52,12 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
     }
 
     @Override
-    public List<Integer> search(int sourceNodeId, int targetNodeId) {
-        if (sourceNodeId == targetNodeId) {
-            return new ArrayList<>(Arrays.asList(sourceNodeId));
+    public DirectedGraphPath search(int sourceNode, int targetNode) {
+        if (sourceNode == targetNode) {
+            return new DirectedGraphPath(Arrays.asList(sourceNode));
         }
 
-        init(sourceNodeId, targetNodeId);
+        init(sourceNode, targetNode);
 
         while (!OPENA.isEmpty() && !OPENB.isEmpty()) {
             if (OPENA.size() < OPENB.size()) {
@@ -68,7 +68,9 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
         }
 
         if (touchNode == null) {
-            return new ArrayList<>();
+            throw new TargetUnreachableException(graph, 
+                                                 sourceNode,
+                                                 targetNode);
         }
 
         return tracebackPath(touchNode, PARENTSA, PARENTSB);
@@ -85,13 +87,13 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
 
         if (DISTANCEA.get(currentNode) +
                 heuristicFunction.estimateDistanceBetween(currentNode,
-                                                          targetNodeId)
+                                                          targetNode)
                 >= bestPathLength
                 ||
                 DISTANCEA.get(currentNode) +
                 fB - 
                 heuristicFunction.estimateDistanceBetween(currentNode,
-                                                          sourceNodeId)
+                                                          sourceNode)
                 >= bestPathLength) {
             // Reject the 'currentNode'.
         } else {
@@ -116,7 +118,7 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
                                     tentativeDistance
                                     + heuristicFunction
                                     .estimateDistanceBetween(childNode,
-                                                             targetNodeId));
+                                                             targetNode));
                     OPENA.add(e);
 
                     if (DISTANCEB.containsKey(childNode)) {
@@ -148,13 +150,13 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
 
         if (DISTANCEB.get(currentNode) +
                 heuristicFunction.estimateDistanceBetween(currentNode,
-                                                          sourceNodeId)
+                                                          sourceNode)
                 >= bestPathLength
                 || 
                 DISTANCEB.get(currentNode) +
                 fA -
                 heuristicFunction.estimateDistanceBetween(currentNode, 
-                                                          targetNodeId)
+                                                          targetNode)
                 >= bestPathLength) {
             // Reject the node 'currentNode'.
         } else {
@@ -177,7 +179,7 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
                                     tentativeDistance
                                     + heuristicFunction
                                     .estimateDistanceBetween(parentNode,
-                                                             sourceNodeId));
+                                                             sourceNode));
                     OPENB.add(e);
 
                     if (DISTANCEA.containsKey(parentNode)) {
@@ -198,7 +200,7 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
         }
     }
 
-    private void init(Integer sourceNodeId, Integer targetNodeId) {
+    private void init(Integer sourceNode, Integer targetNode) {
         OPENA.clear();
         OPENB.clear();
         PARENTSA.clear();
@@ -208,21 +210,21 @@ public final class NBAStarPathfinder extends AbstractPathfinder {
         CLOSED.clear();
 
         double totalDistance
-                = heuristicFunction.estimateDistanceBetween(sourceNodeId,
-                                                            targetNodeId);
+                = heuristicFunction.estimateDistanceBetween(sourceNode,
+                                                            targetNode);
 
         fA = totalDistance;
         fB = totalDistance;
         bestPathLength = Double.MAX_VALUE;
         touchNode = null;
-        this.sourceNodeId = sourceNodeId;
-        this.targetNodeId = targetNodeId;
+        this.sourceNode = sourceNode;
+        this.targetNode = targetNode;
 
-        OPENA.add(new HeapEntry(sourceNodeId, fA));
-        OPENB.add(new HeapEntry(targetNodeId, fB));
-        PARENTSA.put(sourceNodeId, null);
-        PARENTSB.put(targetNodeId, null);
-        DISTANCEA.put(sourceNodeId, 0.0);
-        DISTANCEB.put(targetNodeId, 0.0);
+        OPENA.add(new HeapEntry(sourceNode, fA));
+        OPENB.add(new HeapEntry(targetNode, fB));
+        PARENTSA.put(sourceNode, null);
+        PARENTSB.put(targetNode, null);
+        DISTANCEA.put(sourceNode, 0.0);
+        DISTANCEB.put(targetNode, 0.0);
     }
 }

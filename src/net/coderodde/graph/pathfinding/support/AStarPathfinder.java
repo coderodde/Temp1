@@ -11,7 +11,9 @@ import java.util.Set;
 import net.coderodde.graph.DirectedGraph;
 import net.coderodde.graph.DirectedGraphWeightFunction;
 import net.coderodde.graph.pathfinding.AbstractPathfinder;
+import net.coderodde.graph.pathfinding.DirectedGraphPath;
 import net.coderodde.graph.pathfinding.HeuristicFunction;
+import net.coderodde.graph.pathfinding.TargetUnreachableException;
 
 public final class AStarPathfinder extends AbstractPathfinder {
 
@@ -31,7 +33,7 @@ public final class AStarPathfinder extends AbstractPathfinder {
     }
 
     @Override
-    public List<Integer> search(int sourceNodeId, int targetNodeId) {
+    public DirectedGraphPath search(int sourceNodeId, int targetNodeId) {
         init(sourceNodeId);
 
         while (!OPEN.isEmpty()) {
@@ -71,7 +73,7 @@ public final class AStarPathfinder extends AbstractPathfinder {
             }
         }
 
-        return new ArrayList<>();
+        throw new TargetUnreachableException(graph, sourceNodeId, targetNodeId);
     }
 
     private void init(int sourceNodeId) {

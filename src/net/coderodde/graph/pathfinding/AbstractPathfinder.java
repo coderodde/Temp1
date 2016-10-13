@@ -47,10 +47,10 @@ public abstract class AbstractPathfinder {
      * @param sourceNodeId the source node.
      * @param targetNodeId the target node.
      * @return a shortest path of nodes from source node to target node
-     *         (including the terminal nodes) or an empty list if target is not
-     *         reachable from source.
+     *         including the terminal nodes.
      */
-    public abstract List<Integer> search(int sourceNodeId, int targetNodeId);
+    public abstract DirectedGraphPath search(int sourceNodeId,
+                                             int targetNodeId);
 
     /**
      * Reconstructs a shortest path from the data structures maintained by a 
@@ -59,11 +59,11 @@ public abstract class AbstractPathfinder {
      * @param touchNodeId the node where the two search frontiers agree.
      * @param PARENTSA the parent map in the forward search direction.
      * @param PARENTSB the parent map in the backward search direction.
-     * @return the shortest path.
+     * @return the shortest path object.
      */
-    protected List<Integer> tracebackPath(int touchNodeId, 
-                                          Map<Integer, Integer> PARENTSA,
-                                          Map<Integer, Integer> PARENTSB) {
+    protected DirectedGraphPath tracebackPath(int touchNodeId, 
+                                              Map<Integer, Integer> PARENTSA,
+                                              Map<Integer, Integer> PARENTSB) {
         List<Integer> path = new ArrayList<>();
         Integer currentNodeId = touchNodeId;
 
@@ -83,7 +83,7 @@ public abstract class AbstractPathfinder {
             }
         }
 
-        return path;
+        return new DirectedGraphPath(path);
     }
 
     /**
@@ -92,10 +92,10 @@ public abstract class AbstractPathfinder {
      * 
      * @param targetNodeId the target node.
      * @param PARENTS      the parents map.
-     * @return the shortest path.
+     * @return the shortest path object
      */
-    protected List<Integer> tracebackPath(int targetNodeId, 
-                                          Map<Integer, Integer> PARENTS) {
+    protected DirectedGraphPath tracebackPath(int targetNodeId, 
+                                              Map<Integer, Integer> PARENTS) {
         return tracebackPath(targetNodeId, PARENTS, null);
     }
 }
